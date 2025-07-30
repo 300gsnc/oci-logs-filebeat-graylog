@@ -1,0 +1,21 @@
+filebeat.inputs:
+  - type: kafka
+    hosts: ["cell-1.streaming.sa-saopaulo-1.oci.oraclecloud.com:9092"]
+    topics: ["SIEM_Stream"]
+    group_id: "filebeat-siem"
+    username: 'xxx'
+    password: 'xxx'
+    ssl.enabled: true
+    sasl.mechanism: PLAIN
+    assign_partitions: false
+
+output.file:
+  path: "/opt/oci_logs"
+  filename: "oci_logs-%{+yyyy-MM-dd-HH-mm}.ndjson"
+  rotate_every_kb: 5000
+  number_of_files: 10
+  codec.format:
+    string: '%{[message]}'
+
+file_identity.fingerprint:
+  check_on_start: true
